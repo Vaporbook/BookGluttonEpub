@@ -1,5 +1,7 @@
 <?php
 
+require_once('./BookGluttonEpub.php');
+
 class BookGluttonZipEpub extends BookGluttonEpub
 {
 	
