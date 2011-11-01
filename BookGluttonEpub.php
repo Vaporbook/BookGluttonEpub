@@ -1,12 +1,17 @@
 <?php
 
 //error_reporting(E_ALL | E_STRICT);
+define('JAVA_LOC', '/usr/bin/java');
+define('TIDY_LOC', '/usr/bin/tidy');
+define('EPUBCHECK', '/usr/local/epubcheck/bin/epubcheck.jar');
+define('UPLOAD_DIR', '/tmp');
+define('ZIP_LOC','/usr/bin/zip');
 
 class BookGluttonEpub
 {
   public function BookGluttonEpub()
   {
-    $this->logverbose = sfConfig::get('app_epubverbose');
+    $this->logverbose = true;
     $this->loglevel = 0;
     $this->m = null;
     $this->dcdata = array(); 
@@ -15,9 +20,9 @@ class BookGluttonEpub
     $this->prettyPrint = true;
     $this->readonly = false;
     $this->maxblocks = 3000;
-    $this->tidyloc = sfConfig::get('app_tidyloc');
-    $this->java = sfConfig::get('app_javaloc');
-    $this->epubcheck = $this->java . ' -jar '.sfConfig::get('app_epubcheck');
+    $this->tidyloc = TIDY_LOC;
+    $this->java = JAVA_LOC;
+    $this->epubcheck = $this->java . ' -jar '.EPUBCHECK;
     $this->epubcheck_ckstring = 'Epubcheck Version 1.0.3 No errors or warnings';
     $this->opf = null;
     $this->opfNS = "http://www.idpf.org/2007/opf"; // NO trailing slash
@@ -146,7 +151,7 @@ END
     
     $arcname = $packagedir.'.epub';
     //error_log('created archive file:'.$arcname);
-    $zipcmd = '/usr/bin/zip'; // path to zip command
+    $zipcmd = ZIP_LOC; // path to zip command
     $zipflags = '-0 -j -X';
     $zipcmdfull = "$zipcmd $zipflags $arcname $this->mimetypepath";
 
@@ -197,7 +202,7 @@ END
       $zip->addFromString($file['path'], base64_decode($file['content']));
     }
     $zip->close();
-    $arctmp = sfConfig::get('sf_upload_dir').'/'.uniqid().'.epub';
+    $arctmp = UPLOAD_DIR.'/'.uniqid().'.epub';
     copy($arcname, $arctmp);
     $zipflags = "-F $arctmp";
     $zipcmdfull = "$zipcmd $zipflags";    
@@ -206,7 +211,7 @@ END
     }
     //error_log('zip -F output:'.print_r($output, true));
     unlink($arcname);
-    Util::xRename($arctmp, $arcname);
+    DiskUtil::xRename($arctmp, $arcname);
     return $arcname;
     
   }
@@ -236,7 +241,7 @@ END
 
   public function openRemote($href)
   {
-    $tmpfile = Util::getTempDir().'/epubimport'.time().'.epub';
+    $tmpfile = DiskUtil::getTempDir().'/epubimport'.time().'.epub';
     if(file_put_contents($tmpfile, file_get_contents($href))) {
       $this->open($tmpfile);
       return $tmpfile;
@@ -247,7 +252,7 @@ END
   
   public function ingestRaw($data)
   {
-    $tmpfile = Util::getTempDir().'/epubimport'.time().'.epub';
+    $tmpfile = DiskUtil::getTempDir().'/epubimport'.time().'.epub';
     
     if(file_put_contents($tmpfile, $data)) {
       $this->open($tmpfile);
@@ -2967,7 +2972,7 @@ END
     $this->starttime = time();
     $this->_saveMeta();
     $saved = $this->_makeEpubTarget($this->packagepath.'.epub');
-    Util::xRename($saved, $filename);
+    DiskUtil::xRename($saved, $filename);
   }
     
   public function _saveMeta()
@@ -3018,14 +3023,14 @@ END
     }
     if($opsname==null) $opsname = uniqid(); // new uniqid for path
     
-    if(!Util::xRename($this->packagepath, $workpath . '/' . $opsname)) { // fail, try to backup existing first
+    if(!DiskUtil::xRename($this->packagepath, $workpath . '/' . $opsname)) { // fail, try to backup existing first
       $processUser = posix_getpwuid(posix_geteuid());
       error_log("failed to rename working package path ".$this->packagepath." to $workpath/$opsname. Does the web server have write permissions there? Script user is ".get_current_user()." and process owner is ".$processUser['name']);
       $bkp = $workpath . '/' . $opsname.".BACKUP".time();
-      if(!Util::xRename($workpath . '/' . $opsname, $bkp)) {
+      if(!DiskUtil::xRename($workpath . '/' . $opsname, $bkp)) {
         throw  new Exception('could not move ops path from '.$this->packagepath.' to '.$bkp.'!!!');       
       } else { // now try it
-        if(!@Util::xRename($this->packagepath, $workpath . '/' . $opsname)) {
+        if(!@DiskUtil::xRename($this->packagepath, $workpath . '/' . $opsname)) {
           throw  new Exception('could not backup and move ops path from '.$this->packagepath.' to '.$opsname.'!!!');
         }
       }
@@ -3060,7 +3065,7 @@ END
          
       */
       // clear the package path if it's temporary
-      $tmpdir = Util::getTempDir();
+      $tmpdir = DiskUtil::getTempDir();
       error_log('tmpdir is '.$tmpdir.' and package dir is '.$this->packagepath);
       $regex = "`^".preg_quote($tmpdir)."`";
       //error_log('regex is '.$regex);
@@ -3115,7 +3120,7 @@ END
   {
          if($this->readonly) return;
     $packagedir = $this->packagepath;
-    $zip = '/usr/bin/zip'; // path to zip command
+    $zip = ZIP_LOC; // path to zip command
     $zipflags = '-0 -j -X';
     $zipcmd = "$zip $zipflags $arcname $this->mimetypepath";
     if(!file_exists($this->mimetypepath)) {
@@ -3919,5 +3924,15 @@ class DiskUtil {
 
 		return $tempdir;
 	}
+	
+	public static function xRename($src,$target)
+	 {
+		// bypass PHP rename by shelling to mv, which can
+		// move across partitions
+		$cmd = 'mv "'.$src.'" "'.$target.'"';
+		$o = shell_exec($cmd);
+		return true;
+	 }
+	
 }
 
