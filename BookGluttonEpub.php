@@ -3489,14 +3489,14 @@ END
     
     //$this->logerr($nmap->childNodes->length . ' nodes in navmap');
     
-    $die_fucker = array();
+    $nulltards = array();
     foreach($nmap->childNodes as $nc)
     {
-      $die_fucker[] = $nc;
+      $nulltards[] = $nc;
     }
-    foreach($die_fucker as $dead_fuck)
+    foreach($nulltards as $dead)
     {
-      $nmap->removeChild($dead_fuck);
+      $nmap->removeChild($dead);
     }
 
     foreach($ncw['navMap'] as $ncwitem) {

@@ -8,7 +8,7 @@ Core class for the BookGlutton publishing and social reading platform. Includes 
 
 DEPS
 
-Requires epubcheck, zip, tidy, java, PHP mods for zip, dom_document, simple_xml, possibly others...
+Requires epubcheck, zip, tidy, java, PHP mods for zip, dom_document, simple_xml, xpath, possibly others...
 
 API documentation
 
