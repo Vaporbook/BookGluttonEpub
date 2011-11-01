@@ -3,7 +3,7 @@
 //error_reporting(E_ALL | E_STRICT);
 define('JAVA_LOC', '/usr/bin/java');
 define('TIDY_LOC', '/usr/bin/tidy');
-define('EPUBCHECK', '/usr/local/epubcheck/bin/epubcheck.jar');
+define('EPUBCHECK', '/usr/local/epubcheck-1.1/epubcheck-1.1.jar');
 define('UPLOAD_DIR', '/tmp');
 define('ZIP_LOC','/usr/bin/zip');
 
