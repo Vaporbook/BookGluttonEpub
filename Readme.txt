@@ -20,51 +20,51 @@ Usage Examples:
 1. Open an epub from a file:
 
 
-	$epub = new BookGluttonEpub();
+  $epub = new BookGluttonEpub();
 
-	$epub->open($epub_filename);
+  $epub->open($epub_filename);
 
 
 2. Load an OPS structure into a virtualized Epub:
 
 
-	$epub = new BookGluttonEpub();
-	
-	$epub->loadOPS($path_to_ops);
+  $epub = new BookGluttonEpub();
+  
+  $epub->loadOPS($path_to_ops);
 
 
 3. Open a remote epub by URL and echo its ISBN:
 
 
-	$epub = new BookGluttonEpub();
-	
+  $epub = new BookGluttonEpub();
+  
   $epub->openRemote($href);
 
-	$epub->setPretty(true);
+  $epub->setPretty(true);
     
-	echo $epub->getIsbn();
-	
-	
+  echo $epub->getIsbn();
+  
+  
 4. Open an epub as a virtual zip epub and unzip its contents into an OPS structure:
-	
-	
-	$epub = new BookGluttonZipEpub();
-		
-	$epub->ingestZipData($zipdata, $book->getPackagePath());
-		
-	print_r($epub->getMetaPairs());
-	
-	
-	
+  
+  
+  $epub = new BookGluttonZipEpub();
+    
+  $epub->ingestZipData($zipdata, $book->getPackagePath());
+    
+  print_r($epub->getMetaPairs());
+  
+  
+  
 5. Load remote, modify and save local to OPS:
 
 
-	$epub = new BookGluttonEpub();
+  $epub = new BookGluttonEpub();
 
-	$epub->openRemote($href);
+  $epub->openRemote($href);
 
-	$epub->setTitle($book->getTitle());
-	
+  $epub->setTitle($book->getTitle());
+  
   $epub->setAuthor($book->getAuthor());
 
   $epub->setDescription($book->getDescription());
@@ -72,27 +72,27 @@ Usage Examples:
   $epub->setRights($book->getRights());
 
   $epub->writeOPS();
-	
-	
+  
+  
 6. Create a new virtual OPS, then load an HTML conversion source, then save locally as OPS:
-	
-	
-	$epub = new BookGluttonEpub();
-	
-	$epub->create(array(
-													'title'=>$book->getTitle(),
-													'author'=>$book->getAuthor(),
-													'language'=>$book->getLanguage(),
-													'desc'=>$book->getDescription(),
-													'rights'=>$book->getRights()
-									
-		));
+  
+  
+  $epub = new BookGluttonEpub();
+  
+  $epub->create(array(
+              'title'=>$book->getTitle(),
+              'author'=>$book->getAuthor(),
+              'language'=>$book->getLanguage(),
+              'desc'=>$book->getDescription(),
+              'rights'=>$book->getRights()
+      
+    ));
 
-	$epub->loadSource($zipped_html_or_html);
+  $epub->loadSource($zipped_html_or_html);
 
-	$epub->moveOps($ops_repo_root, $unique_package_directory_id);
-	
+  $epub->moveOps($ops_repo_root, $unique_package_directory_id);
+  
 
-	
-	
-	
+  
+  
+  
