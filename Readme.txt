@@ -16,7 +16,8 @@ Coming soon - There are many helpful convenience methods, and helpful comments, 
 
 TODO
 
-Clean up the code! Production-tested but messy.
+1.Clean up the code! Production-tested but messy.
+2.Add some test scripts and test epub/OPS content
 
 Usage Examples:
 
