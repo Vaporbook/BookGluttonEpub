@@ -21,6 +21,8 @@ TODO
 
 Usage Examples:
 
+Please see the test.php script for the simplest possible example of usage. More involved test scripts will be added when I get time. Do look through the main class file at some of the methods available. There is much useful there.
+
 
 1. Open an epub from a file:
 
