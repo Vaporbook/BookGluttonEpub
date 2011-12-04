@@ -1980,6 +1980,11 @@ END
     }
   }
    
+	public function getFlatNav()
+	{
+		return $this->ncxXP->evaluate('//navPoint');
+	}
+
    public function getNavLabelByHref($href)
    { 
      $found = null;
