@@ -1979,12 +1979,6 @@ END
       return $this->opfXP->evaluate('//*[@href="'.$path.'"]',$this->opf_manifestNode)->item(0);
     }
   }
-    
-   public function getFlatNav()
-   {
-      // returns all navpoints in document order, flat structure
-      return $this->ncx->getElementsByTagName('navPoint');
-   }
    
    public function getNavLabelByHref($href)
    { 
@@ -3277,7 +3271,7 @@ END
   public function logerr($msg, $level=0)
   {
     if($this->logverbose && $level <= $this->loglevel) {
-      //error_log($msg);
+      error_log($msg);
     }
   }
    

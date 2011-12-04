@@ -64,7 +64,9 @@ class BookGluttonZipEpub extends BookGluttonEpub
 
           }
       }
+	
 			$this->ncx = parent::makeNcxDoc($this->ncxXML);
+
 			return true;
 		}
 	}
