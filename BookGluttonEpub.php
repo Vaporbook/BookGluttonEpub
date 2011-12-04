@@ -1982,7 +1982,7 @@ END
    
 	public function getFlatNav()
 	{
-		return $this->ncxXP->evaluate('//navPoint');
+		return $this->ncx->getElementsByTagName('navPoint');
 	}
 
    public function getNavLabelByHref($href)

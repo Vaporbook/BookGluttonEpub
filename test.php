@@ -21,7 +21,12 @@ $epub = new BookGluttonZipEpub();
 $epub->enableLogging();
 $epub->loadZip($file);
 print_r($epub->getMetaPairs());
-print_r($epub->getFlatNav());
+
+echo "There are ".$epub->getFlatNav()->length." navPoints here.\n";
+echo "NCX:\n";
+foreach($epub->getFlatNav() as $np) {
+	echo $np->nodeValue."\n";
+}
 
 
 ?>
